@@ -6,7 +6,7 @@ import { Scene05Brand } from "@/components/scenes/Scene05Brand";
 import { Scene06Growth } from "@/components/scenes/Scene06Growth";
 import { Scene07AI } from "@/components/scenes/Scene07AI";
 import { Scene08System } from "@/components/scenes/Scene08System";
-import { Scene09Experiments } from "@/components/scenes/Scene09Experiments";
+import { Scene09Work } from "@/components/scenes/Scene09Work";
 import { Scene10Process } from "@/components/scenes/Scene10Process";
 import { Scene11CTA } from "@/components/scenes/Scene11CTA";
 
@@ -26,7 +26,7 @@ export default function HomePage() {
       <Scene06Growth />
       <Scene07AI />
       <Scene08System />
-      <Scene09Experiments />
+      <Scene09Work />
       <Scene10Process />
       <Scene11CTA />
     </>
