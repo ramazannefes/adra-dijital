@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/*
+ * ADRA DİJİTAL — DESIGN TOKENS
+ * Tek doğruluk kaynağı. Component'lerde renk hard-code edilmez.
+ */
+@theme {
+  /* Renk sistemi */
+  --color-background: #0a0a0b;
+  --color-surface: #111113;
+  --color-foreground: #f4f4f2;
+  --color-muted: #8a8a93;
+  --color-accent: #c8f04a;
+  --color-border: rgba(244, 244, 242, 0.08);
+  --color-grid-line: rgba(244, 244, 242, 0.03);
+
+  /* Tipografi */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Motion (Fast UI / Slow Cinematic) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Zemin dokuları */
+  --noise-opacity: 0.035;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: auto; /* smooth scroll Lenis'e emanet */
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-background);
+}
+
+/* İnce, marka uyumlu scrollbar (yalnızca desktop) */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--color-muted) 35%, transparent);
+    border-radius: 999px;
+    border: 3px solid var(--color-background);
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography helpers                                                  */
+/* ------------------------------------------------------------------ */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 11vw, 10rem);
+}
+
+.display-l {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  font-size: clamp(2.25rem, 6vw, 5.5rem);
+}
+
+.display-m {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+  font-size: clamp(1.6rem, 3.6vw, 2.9rem);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.72rem;
+  color: var(--color-muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Doku: çok düşük opaklıkta grid + noise                              */
+/* ------------------------------------------------------------------ */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--color-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid-line) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.bg-noise::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--noise-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ */
+/* Focus & a11y                                                        */
+/* ------------------------------------------------------------------ */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-accent);
+  color: var(--color-background);
+  font-family: var(--font-display);
+  font-weight: 600;
+  transition: top 0.2s var(--ease-out);
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Touch cihazlar: hover bağımlılıkları kapatılır                      */
+/* ------------------------------------------------------------------ */
+@media (hover: none) {
+  [data-magnetic] {
+    transform: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: scrub/pin yerine statik kare                        */
+/* JS tarafında da Lenis + GSAP scrub devre dışı bırakılır.            */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html[data-reduced-motion="true"] {
+  .reveal-line,
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
